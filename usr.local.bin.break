@@ -1,0 +1,34 @@
+#!/bin/sh
+
+MAX=80
+
+"$@" | while IFS= read -r line; do
+    out=""
+    for word in $line; do
+        if [ -z "$out" ]; then
+            out="$word"
+        else
+            new="$out $word"
+            if [ ${#new} -le $MAX ]; then
+                out="$new"
+            else
+                # emit previous chunk
+                if [ ${#out} -gt $MAX ]; then
+                    printf '%s \\\n' "$out"
+                else
+                    printf '%s\n' "$out"
+                fi
+                out="$word"
+            fi
+        fi
+    done
+
+    # emit final chunk
+    if [ -n "$out" ]; then
+        if [ ${#out} -gt $MAX ]; then
+            printf '%s \\\n' "$out"
+        else
+            printf '%s\n' "$out"
+        fi
+    fi
+done
