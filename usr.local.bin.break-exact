@@ -1,0 +1,15 @@
+#!/bin/sh
+#Made by Christopher T. Williams 05/19/2026
+
+#break lines at exactly 80 characters, no consideration for words.
+MAX=80   # line-length threshold
+
+# Run the user command and process its stdout
+"$@" | while IFS= read -r line; do
+    len=${#line}
+    if [ "$len" -gt "$MAX" ]; then
+        printf '%s \\\n' "$line"
+    else
+        printf '%s\n' "$line"
+    fi
+done
