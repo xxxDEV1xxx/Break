@@ -1,5 +1,8 @@
 #!/bin/sh
 
+#made by Christopher T. Williams 05/19/2026
+
+#threshold per line, breaks at each word instead of 80char
 MAX=80
 
 "$@" | while IFS= read -r line; do
